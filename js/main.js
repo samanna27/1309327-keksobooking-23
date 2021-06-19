@@ -36,39 +36,64 @@ const latMAX=35.70000;
 const LAT_LNG_PRECISION=5;
 const lngMIN=139.70000;
 const lngMAX=139.80000;
+const minLENGTH=1;
 
+const getRandomPositiveInteger = (min, max) => {
+  const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
+  const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
+  const result = Math.random() * (upper - lower + 1) + lower;
+  return Math.floor(result);
+};
+const getRandomPositiveFloat = (min, max, digits = 1) => {
+  const lower = Math.min(Math.abs(min), Math.abs(max));
+  const upper = Math.max(Math.abs(min), Math.abs(max));
+  const result = Math.random() * (upper - lower) + lower;
+  return result.toFixed(digits);
+};
 const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger(0,elements.length-1)];
+const getRandomArrayElements = (elements, count) => {
+  const elementsCopy=elements.slice();
+  let result=[];
+  for (let index=0; index<count; index++) {
+    const randomIndex=getRandomPositiveInteger(0,elementsCopy.length-1);
+    const removed=elementsCopy.splice(randomIndex,1);
+    result=result.concat(removed);
+  }
+  return result;
+};
 
-const avatarNumber = () =>{
+const avatarNumber = () => {
   const index=getRandomPositiveInteger(1,10);
-  // eslint-disable-next-line prefer-template
-  return (index===10)? index.toString: '0'+index;
+  return (index===10)? `${index}`: `0${index}`;
 };
 
 const createAdvertisementObject = () => {
+  const lat=getRandomPositiveFloat (latMIN, latMAX, LAT_LNG_PRECISION);
+  const lng=getRandomPositiveFloat (lngMIN, lngMAX, LAT_LNG_PRECISION);
   return {
     author: {
-      avatar: 'img/avatars/user'+avatarNumber+'.png',
+      avatar: `img/avatars/user${avatarNumber()}.png`,
     },
     offer: {
       title: 'Сдается в аренду.',
-      address: location.lat.toString + location.lng.toString,
+      address: `${lat}, ${lng}`,
       price: getRandomPositiveInteger(MIN, MAX),
       type: getRandomArrayElement(TYPES),
       rooms: getRandomPositiveInteger(MIN, MAX),
       guests: getRandomPositiveInteger(MIN, MAX),
       checkin: getRandomArrayElement(CHECKINS),
       checkout: getRandomArrayElement(CHECKOUTS),
-      features: new Array(getRandomPositiveInteger(0,FEATURES.length-1)).fill(null).map(getRandomArrayElement(FEATURES))
-      ,
+      features: getRandomArrayElements(FEATURES,getRandomPositiveInteger(minLENGTH,FEATURES.length-1)),
       description: 'Есть все необходимое для полноценного проживания!',
-      photos: new Array(getRandomPositiveInteger(0,PHOTOS.length-1)).fill(null).map(getRandomArrayElement(PHOTOS)),
+      photos: getRandomArrayElements(PHOTOS,getRandomPositiveInteger(minLENGTH,PHOTOS.length-1)),
     },
     location: {
-      lat: getRandomPositiveFloat (latMIN, latMAX, digits = LAT_LNG_PRECISION),
-      lng: getRandomPositiveFloat (lngMIN, lngMAX, digits = LAT_LNG_PRECISION),
+      lat: lat,
+      lng: lng,
     },
   };
 };
 
 const getArrayofAdvertisementObjects = new Array (ADVERTISEMENT_COUNT).fill(null).map(()=>createAdvertisementObject());
+
+console(getArrayofAdvertisementObjects);
