@@ -1,0 +1,3 @@
+const deactivatePage = () => {};
+
+export {deactivatePage};

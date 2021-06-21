@@ -1,0 +1,3 @@
+const activatePage = () => {};
+
+export {activatePage};
