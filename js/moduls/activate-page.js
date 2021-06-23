@@ -1,3 +1,0 @@
-const activatePage = () => {};
-
-export {activatePage};
