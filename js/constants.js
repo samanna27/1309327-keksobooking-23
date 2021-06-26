@@ -1,5 +1,12 @@
 const ADVERTISEMENT_COUNT = 10;
 const TYPES = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
+const TYPESMODIFIER = {
+  palace: 'Дворец',
+  flat: 'Квратира',
+  house: 'Дом',
+  bungalow: 'Бунгало',
+  hotel: 'Отель',
+};
 const CHECKINS = ['12:00', '13:00', '14:00'];
 const CHECKOUTS = ['12:00', '13:00', '14:00'];
 const FEATURES = [
@@ -29,6 +36,7 @@ const AVATARMAXINDEX = 10;
 export {
   ADVERTISEMENT_COUNT,
   TYPES,
+  TYPESMODIFIER,
   CHECKINS,
   CHECKOUTS,
   FEATURES,

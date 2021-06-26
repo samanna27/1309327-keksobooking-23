@@ -70,3 +70,5 @@ const getArrayofAdvertisementObjects = new Array(ADVERTISEMENT_COUNT)
   .map(() => createAdvertisementObject());
 
 console(getArrayofAdvertisementObjects);
+
+export {getArrayofAdvertisementObjects};
