@@ -4,11 +4,8 @@ import { TYPESMODIFIER } from './constants.js';
 const offers = getArrayofAdvertisementObjects;
 const cardTemplate = document.querySelector('#card').content;
 const popupElement = cardTemplate.querySelector('.popup');
-const mapCanvasElement = document.querySelector('#map-(canvas');
+const mapCanvasElement = document.querySelector('#map-canvas');
 const offerElement = offers.slice(0, offers.length - (offers.length - 1));
-
-// eslint-disable-next-line no-console
-console.log (offerElement);
 
 offerElement.forEach((offer) => {
   const newPopupElement = popupElement.cloneNode(true);
@@ -87,13 +84,19 @@ offerElement.forEach((offer) => {
   }
 
   const offerElementPhotoArray = offer.offer.photos;
-  offerElementPhotoArray.forEach(() => {
-    const popupPhotosListElement =
-      newPopupElement.querySelector('.popup__photos');
-    const popupPhotoElementClone = popupPhotosListElement.querySelector('.popup__photo').cloneNode(true);
-    popupPhotoElementClone.src = offer.offer.photos;
-    popupPhotosListElement.appendChild(popupPhotoElementClone);
-  });
+  const popupPhotosListElement =
+  newPopupElement.querySelector('.popup__photos');
+  if (offerElementPhotoArray) {
+    offerElementPhotoArray.forEach((item) => {
+      const popupPhotoElementClone = popupPhotosListElement.querySelector('.popup__photo').cloneNode(true);
+      popupPhotoElementClone.src = item;
+      popupPhotosListElement.appendChild(popupPhotoElementClone);
+    });
+  } else {
+    popupPhotosListElement.remove();
+  }
+  const popupPhotosListElementImagesArray = popupPhotosListElement.querySelectorAll('.popup__photo');
+  popupPhotosListElementImagesArray[0].remove();
 
   const popupAvatarElement = newPopupElement.querySelector('.popup__avatar');
   if (offer.author.avatar) {
@@ -103,9 +106,6 @@ offerElement.forEach((offer) => {
   }
 
   mapCanvasElement.appendChild(newPopupElement);
-
-  // eslint-disable-next-line no-console
-  console.log(newPopupElement);
 });
 
 export { mapCanvasElement as offersList };

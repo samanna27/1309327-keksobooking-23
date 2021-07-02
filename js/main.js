@@ -1,3 +1,3 @@
-import { offersList } from './creation-similar-offers.js';
+import { offersList } from './popup-card-creation.js';
 
 console.log(offersList);
