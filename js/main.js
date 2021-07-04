@@ -1,6 +1,7 @@
 import { offersList } from './popup-card-creation.js';
-import { inactivateForm, activateForm} from './form-processing.js';
+import { inactivateForm, activateForm } from './form-processing.js';
 
-console (offersList);
-inactivateForm ();
-activateForm ();
+// eslint-disable-next-line no-console
+console.log(offersList);
+inactivateForm();
+activateForm();
