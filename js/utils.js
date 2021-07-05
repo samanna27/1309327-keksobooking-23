@@ -12,8 +12,5 @@ function getRandomPositiveFloat(a, b, digits = 1) {
   return result.toFixed(digits);
 }
 
-console(getRandomPositiveInteger());
-console(getRandomPositiveFloat());
-
 export { getRandomPositiveInteger };
 export { getRandomPositiveFloat };

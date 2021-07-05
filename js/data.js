@@ -69,4 +69,4 @@ const getArrayofAdvertisementObjects = new Array(ADVERTISEMENT_COUNT)
   .fill(null)
   .map(() => createAdvertisementObject());
 
-console(getArrayofAdvertisementObjects);
+export {getArrayofAdvertisementObjects};
