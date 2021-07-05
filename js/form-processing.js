@@ -1,13 +1,18 @@
-import { MIN_TITLE_LENGTH, MAX_TITLE_LENGTH } from './constants.js';
+import { MIN_TITLE_LENGTH, MAX_TITLE_LENGTH, TYPE_MIN_PRICE, TYPE_PLACEHOLDER } from './constants.js';
 
 const adFormElement = document.querySelector('.ad-form');
 const adFormFieldsetElements = adFormElement.querySelectorAll('fieldset');
 const mapFiltersElement = document.querySelector('.map__filters');
 const mapFilterInteractiveElements =
-  mapFiltersElement.querySelectorAll('.map__filter');
+mapFiltersElement.querySelectorAll('.map__filter');
 const mapFieldsetElement = mapFiltersElement.querySelector('fieldset');
 const adTitleElement = adFormElement.querySelector('#title');
 const adPriceElement = adFormElement.querySelector('#price');
+const adRoomNumberElement = adFormElement.querySelector('#room_number');
+const adCapacityElement = adFormElement.querySelector('#capacity');
+const adTypeElement = adFormElement.querySelector('#type');
+const adTimeinElement = adFormElement.querySelector('#timein');
+const adTimeoutElement = adFormElement.querySelector('#timeout');
 
 const inactivateForm = () => {
   adFormElement.classList.add('ad-form--disabled');
@@ -59,23 +64,67 @@ adTitleElement.addEventListener('input', () => {
   adTitleElement.reportValidity();
 });
 
-adPriceElement.addEventListener('input', () => {
-  const value = adPriceElement.value;
-  const valueLength = adPriceElement.value.length;
+const priceInputHandler = () => {
+  adPriceElement.addEventListener('input', (evt) => {
+    const value = adPriceElement.value;
+    const minPrice = adPriceElement.min;
+    const valueLength = adPriceElement.value.length;
 
-  if (value > 1000000) {
-    adPriceElement.setCustomValidity('Цена не может быть больше 1 000 000');
-  } else if (valueLength === 0) {
-    adPriceElement.setCustomValidity('Обязательное поле');
-  } else {
-    adPriceElement.setCustomValidity('');
-  }
+    if (value > 1000000) {
+      adPriceElement.setCustomValidity('Цена не может быть больше 1 000 000');
+    } else if (valueLength === 0) {
+      adPriceElement.setCustomValidity('Обязательное поле');
+    } else if (value < minPrice) {
+      adPriceElement.setCustomValidity(`Минимальная цена ${evt.target.min}`);
+    } else {
+      adPriceElement.setCustomValidity('');
+    }
 
-  adPriceElement.reportValidity();
+    adPriceElement.reporValidity;
+  });
+};
+
+priceInputHandler ();
+
+adTypeElement.addEventListener('change', () => {
+  adPriceElement.value = '';
+  const type = adTypeElement.value;
+  const minPrice = TYPE_MIN_PRICE[type];
+  const pricePlaceholder = TYPE_PLACEHOLDER[type];
+
+  adPriceElement.placeholder = pricePlaceholder;
+  adPriceElement.min = minPrice;
 });
 
-const adRoomNumberElement = adFormElement.querySelector('#room_number');
-const adCapacityElement = adFormElement.querySelector('#capacity');
+adTimeinElement.addEventListener('change', (evt) => {
+  const value = evt.target.value;
+  const adTimeoutElementOptionArray =
+    adTimeoutElement.querySelectorAll('option');
+  adTimeoutElementOptionArray.forEach ((item) => {
+    if (item.value !== value){
+      item.setAttribute('disabled', 'disabled');
+      item.removeAttribute('selected');
+    } else {
+      item.removeAttribute('disabled');
+      item.setAttribute('selected', 'selected');
+    }
+  });
+});
+
+adTimeoutElement.addEventListener('change', (evt) => {
+  const value = evt.target.value;
+  const adTimeinElementOptionArray =
+    adTimeinElement.querySelectorAll('option');
+  adTimeinElementOptionArray.forEach ((item) => {
+    if (item.value !== value){
+      item.setAttribute('disabled', 'disabled');
+      item.removeAttribute('selected');
+    } else {
+      item.removeAttribute('disabled');
+      item.setAttribute('selected', 'selected');
+    }
+  });
+});
 
 const filterChangeHandler = function (evt) {
   const value = evt.target.value;
@@ -114,5 +163,6 @@ const filterChangeHandler = function (evt) {
 };
 
 adRoomNumberElement.addEventListener('change', filterChangeHandler);
+
 
 export { inactivateForm, activateForm };
