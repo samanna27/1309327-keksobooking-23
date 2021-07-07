@@ -4,22 +4,22 @@ import {
   adFormElement
 } from './form-processing.js';
 import { getArrayofAdvertisementObjects } from './data.js';
-import { TYPESMODIFIER } from './constants.js';
+import { TYPESMODIFIER, PIN_DEFAULT_LAT, PIN_DEFAULT_LNG } from './constants.js';
 
 const addressElement = adFormElement.querySelector('#address');
-const resetButton = document.querySelector('.ad-form__reset');
+const resetButtonElement = document.querySelector('.ad-form__reset');
 
 inactivateForm();
 
 const map = L.map('map-canvas')
   .on('load', () => {
     activateForm();
-    addressElement.value = `${35.7}, ${139.6}`;
+    addressElement.value = `${PIN_DEFAULT_LAT}, ${PIN_DEFAULT_LNG}`;
   })
   .setView(
     {
-      lat: 35.7,
-      lng: 139.6,
+      lat: PIN_DEFAULT_LAT,
+      lng: PIN_DEFAULT_LNG,
     },
     10,
   );
@@ -30,15 +30,15 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 const mainPinIcon = L.icon({
-  iconUrl: './img/main-pin.svg',
+  iconUrl: '/img/main-pin.svg',
   iconSize: [52, 52],
   iconAnchor: [26, 52],
 });
 
 const mainPinMarker = L.marker(
   {
-    lat: 35.7,
-    lng: 139.6,
+    lat: PIN_DEFAULT_LAT,
+    lng: PIN_DEFAULT_LNG,
   },
   {
     draggable: true,
@@ -50,27 +50,29 @@ mainPinMarker.addTo(map);
 
 mainPinMarker.on('moveend', (evt) => {
   const coordinates = evt.target.getLatLng();
-  const coordinateLat = Math.round(coordinates.lat * 100000) / 100000;
-  const coordinateLng = Math.round(coordinates.lng * 100000) / 100000;
+  const coordinateLat = coordinates.lat.toFixed(5);
+  const coordinateLng = coordinates.lng.toFixed(5);
   addressElement.value = `${coordinateLat}, ${coordinateLng}`;
 });
 
 const adPinIcon = L.icon({
-  iconUrl: './img/pin.svg',
+  iconUrl: '/img/pin.svg',
   iconSize: [40, 40],
   iconAnchor: [20, 40],
 });
 
-resetButton.addEventListener('click', () => {
+resetButtonElement.addEventListener('click', () => {
   mainPinMarker.setLatLng({
-    lat: 35.7,
-    lng: 139.6,
+    lat: PIN_DEFAULT_LAT,
+    lng: PIN_DEFAULT_LNG,
   });
 
   map.setView({
-    lat: 35.7,
-    lng: 139.6,
-  });
+    lat: PIN_DEFAULT_LAT,
+    lng: PIN_DEFAULT_LNG,
+  },
+  10,
+  );
 });
 
 const offers = getArrayofAdvertisementObjects;
