@@ -34,6 +34,20 @@ const AVATARMININDEX = 1;
 const AVATARMAXINDEX = 10;
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
+const TYPE_MIN_PRICE = {
+  bungalow: 0,
+  flat: 1000,
+  hotel: 3000,
+  house: 5000,
+  palace: '10000',
+};
+const TYPE_PLACEHOLDER = {
+  bungalow: '0',
+  flat: '1 000',
+  hotel: '3 000',
+  house: '5 000',
+  palace: '10 000',
+};
 
 export {
   ADVERTISEMENT_COUNT,
@@ -54,5 +68,7 @@ export {
   AVATARMININDEX,
   AVATARMAXINDEX,
   MIN_TITLE_LENGTH,
-  MAX_TITLE_LENGTH
+  MAX_TITLE_LENGTH,
+  TYPE_MIN_PRICE,
+  TYPE_PLACEHOLDER
 };
