@@ -3,8 +3,8 @@ import {
   activateForm,
   adFormElement
 } from './form-processing.js';
-import { getArrayofAdvertisementObjects } from './data.js';
-import { TYPESMODIFIER, PIN_DEFAULT_LAT, PIN_DEFAULT_LNG } from './constants.js';
+import { TYPESMODIFIER, PIN_DEFAULT_LAT, PIN_DEFAULT_LNG, ADVERTISEMENT_COUNT } from './constants.js';
+import { getData, sendData } from './api.js';
 
 const addressElement = adFormElement.querySelector('#address');
 const resetButtonElement = document.querySelector('.ad-form__reset');
@@ -75,8 +75,6 @@ resetButtonElement.addEventListener('click', () => {
   );
 });
 
-const offers = getArrayofAdvertisementObjects;
-
 const createCustomPopup = (offer) => {
   const cardTemplate = document.querySelector('#card').content;
   const popupElement = cardTemplate.querySelector('.popup');
@@ -133,10 +131,10 @@ const createCustomPopup = (offer) => {
 
   const popupFeaturesElement =
     newPopupElement.querySelector('.popup__features');
-  const featuresModifiers = offer.offer.features.map(
-    (feature) => `popup__feature--${feature}`,
-  );
-  if (featuresModifiers) {
+  if (offer.offer.features) {
+    const featuresModifiers = offer.offer.features.map(
+      (feature) => `popup__feature--${feature}`,
+    );
     popupFeaturesElement.querySelectorAll('.popup__feature').forEach((item) => {
       const modifier = item.classList[1];
       if (!featuresModifiers.includes(modifier)) {
@@ -205,6 +203,18 @@ const createMarker = (offer) => {
   });
 };
 
-offers.forEach((offer) => {
-  createMarker(offer);
+getData((offers) => {
+  offers
+    .slice(0,ADVERTISEMENT_COUNT)
+    .forEach((item)=>{
+      createMarker(item);
+    });
 });
+
+adFormElement.addEventListener('submit', (evt)=>{
+  evt.preventDefault();
+  const formData = new FormData(evt.target);
+  sendData(formData);
+});
+
+export { map, mainPinMarker };
