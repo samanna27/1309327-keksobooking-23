@@ -32,7 +32,9 @@ const activateForm = () => {
   adFormFieldsetElements.forEach((item) => {
     item.removeAttribute('disabled');
   });
+};
 
+const activateFilter = () => {
   mapFiltersElement.classList.remove('map__filters--disabled');
   mapFilterInteractiveElements.forEach((item) => {
     item.removeAttribute('disabled');
@@ -164,4 +166,4 @@ const filterChangeHandler = function (evt) {
 
 adRoomNumberElement.addEventListener('change', filterChangeHandler);
 
-export { inactivateForm, activateForm, adFormElement };
+export { inactivateForm, activateForm, adFormElement, activateFilter };
