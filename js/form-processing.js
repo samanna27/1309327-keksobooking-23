@@ -167,3 +167,4 @@ const filterChangeHandler = function (evt) {
 adRoomNumberElement.addEventListener('change', filterChangeHandler);
 
 export { inactivateForm, activateForm, adFormElement, activateFilter };
+
