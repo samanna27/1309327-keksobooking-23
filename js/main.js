@@ -1,13 +1,29 @@
 import {
   inactivateForm,
   activateForm,
-  adFormElement
+  adFormElement,
+  activateFilter
 } from './form-processing.js';
-import { TYPESMODIFIER, PIN_DEFAULT_LAT, PIN_DEFAULT_LNG, ADVERTISEMENT_COUNT } from './constants.js';
+import {
+  TYPESMODIFIER,
+  PIN_DEFAULT_LAT,
+  PIN_DEFAULT_LNG,
+  ADVERTISEMENT_COUNT,
+  RERENDER_DELAY
+} from './constants.js';
 import { getData, sendData } from './api.js';
+import {
+  compareTypes,
+  comparePrice,
+  compareRooms,
+  compareGuests,
+  compareOffers,
+  debounce
+} from './utils.js';
 
 const addressElement = adFormElement.querySelector('#address');
 const resetButtonElement = document.querySelector('.ad-form__reset');
+const mapFiltersElement = document.querySelector('.map__filters');
 
 inactivateForm();
 
@@ -67,11 +83,12 @@ resetButtonElement.addEventListener('click', () => {
     lng: PIN_DEFAULT_LNG,
   });
 
-  map.setView({
-    lat: PIN_DEFAULT_LAT,
-    lng: PIN_DEFAULT_LNG,
-  },
-  10,
+  map.setView(
+    {
+      lat: PIN_DEFAULT_LAT,
+      lng: PIN_DEFAULT_LNG,
+    },
+    10,
   );
 });
 
@@ -203,15 +220,33 @@ const createMarker = (offer) => {
   });
 };
 
-getData((offers) => {
-  offers
-    .slice(0,ADVERTISEMENT_COUNT)
-    .forEach((item)=>{
-      createMarker(item);
-    });
-});
+const loadAdnFilterData = () =>
+  getData((offers) => {
+    activateFilter();
+    markerGroup.clearLayers();
+    offers
+      .slice()
+      .filter(compareTypes)
+      .filter(comparePrice)
+      .filter(compareRooms)
+      .filter(compareGuests)
+      .sort(compareOffers)
+      .slice(0, ADVERTISEMENT_COUNT)
+      .forEach((item) => {
+        createMarker(item);
+      });
+  });
 
-adFormElement.addEventListener('submit', (evt)=>{
+loadAdnFilterData();
+
+const mapFilterElementChangeHandler = debounce(
+  loadAdnFilterData,
+  RERENDER_DELAY,
+);
+
+mapFiltersElement.addEventListener('change', mapFilterElementChangeHandler);
+
+adFormElement.addEventListener('submit', (evt) => {
   evt.preventDefault();
   const formData = new FormData(evt.target);
   sendData(formData);
