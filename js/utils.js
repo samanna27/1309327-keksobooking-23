@@ -1,14 +1,23 @@
-import { ALERT_SHOW_TIME } from './constants.js';
-import { PIN_DEFAULT_LAT, PIN_DEFAULT_LNG, LOW_PRICE, MIDDLE_PRICE } from './constants.js';
+import {
+  ALERT_SHOW_TIME,
+  PIN_DEFAULT_LAT,
+  PIN_DEFAULT_LNG,
+  LOW_PRICE,
+  MIDDLE_PRICE
+} from './constants.js';
 import { adFormElement } from './form-processing.js';
 import { map, mainPinMarker } from './main.js';
 
 const addressElement = adFormElement.querySelector('#address');
 const mapFiltersElement = document.querySelector('.map__filters');
-const housingTypeFilterElement = mapFiltersElement.querySelector('#housing-type');
-const housingPriceFilterElement = mapFiltersElement.querySelector('#housing-price');
-const housingRoomsFilterElement = mapFiltersElement.querySelector('#housing-rooms');
-const housingGuestsFilterElement = mapFiltersElement.querySelector('#housing-guests');
+const housingTypeFilterElement =
+  mapFiltersElement.querySelector('#housing-type');
+const housingPriceFilterElement =
+  mapFiltersElement.querySelector('#housing-price');
+const housingRoomsFilterElement =
+  mapFiltersElement.querySelector('#housing-rooms');
+const housingGuestsFilterElement =
+  mapFiltersElement.querySelector('#housing-guests');
 
 const showAlert = (message) => {
   const alertContainer = document.createElement('div');
@@ -37,11 +46,12 @@ const setToDefault = function () {
     lng: PIN_DEFAULT_LNG,
   });
 
-  map.setView({
-    lat: PIN_DEFAULT_LAT,
-    lng: PIN_DEFAULT_LNG,
-  },
-  10,
+  map.setView(
+    {
+      lat: PIN_DEFAULT_LAT,
+      lng: PIN_DEFAULT_LNG,
+    },
+    10,
   );
   adFormElement.reset();
   addressElement.value = `${PIN_DEFAULT_LAT}, ${PIN_DEFAULT_LNG}`;
@@ -50,7 +60,10 @@ const setToDefault = function () {
 const isEscEvent = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
 
 const compareTypes = (offer) => {
-  if (housingTypeFilterElement.value === 'any' || offer.offer.type === housingTypeFilterElement.value) {
+  if (
+    housingTypeFilterElement.value === 'any' ||
+    offer.offer.type === housingTypeFilterElement.value
+  ) {
     return offer;
   }
 };
@@ -58,11 +71,21 @@ const compareTypes = (offer) => {
 const comparePrice = (offer) => {
   if (housingPriceFilterElement.value === 'any') {
     return offer;
-  } else if (housingPriceFilterElement.value === 'low' && offer.offer.price < LOW_PRICE ) {
+  } else if (
+    housingPriceFilterElement.value === 'low' &&
+    offer.offer.price < LOW_PRICE
+  ) {
     return offer;
-  } else if (housingPriceFilterElement.value === 'middle' && offer.offer.price >= LOW_PRICE && offer.offer.price < MIDDLE_PRICE) {
+  } else if (
+    housingPriceFilterElement.value === 'middle' &&
+    offer.offer.price >= LOW_PRICE &&
+    offer.offer.price < MIDDLE_PRICE
+  ) {
     return offer;
-  } else if (housingPriceFilterElement.value === 'high' && offer.offer.price >= MIDDLE_PRICE) {
+  } else if (
+    housingPriceFilterElement.value === 'high' &&
+    offer.offer.price >= MIDDLE_PRICE
+  ) {
     return offer;
   } else {
     return false;
@@ -90,34 +113,46 @@ const compareGuests = (offer) => {
 };
 
 const getOfferRank = (offer) => {
-  const filterFeaturesElement = document.querySelector('#housing-features');
-  filterFeaturesElement.querySelectorAll('[name = "features"]').forEach((feature) => {
-    let rank = 0;
-    if(offer.offer.features) {
-      if (offer.offer.features.includes(feature.value)) {
-        rank += 1;
-      }
+  const filterFeaturesElements = document.querySelectorAll(
+    '#housing-features input',
+  );
+  let rank = 0;
+  filterFeaturesElements.forEach((element) => {
+    if (
+      element.checked &&
+      offer.offer.features &&
+      offer.offer.features.includes(element.value)
+    ) {
+      rank += 1;
     }
-    return rank;
   });
+  return rank;
 };
 
 const compareOffers = (offerA, offerB) => {
   const rankA = getOfferRank(offerA);
   const rankB = getOfferRank(offerB);
-  return rankB-rankA;
+  return rankB - rankA;
 };
 
-function debounce (callback, timeoutDelay = 500) {
+function debounce(callback, timeoutDelay = 500) {
   let timeoutId;
 
   return (...rest) => {
     clearTimeout(timeoutId);
 
     timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
-
   };
 }
 
-export {debounce};
-export { showAlert, setToDefault, isEscEvent, compareTypes, comparePrice, compareRooms, compareGuests, compareOffers };
+export {
+  debounce,
+  showAlert,
+  setToDefault,
+  isEscEvent,
+  compareTypes,
+  comparePrice,
+  compareRooms,
+  compareGuests,
+  compareOffers
+};

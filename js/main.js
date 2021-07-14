@@ -4,18 +4,26 @@ import {
   adFormElement,
   activateFilter
 } from './form-processing.js';
-import { TYPESMODIFIER, PIN_DEFAULT_LAT, PIN_DEFAULT_LNG, ADVERTISEMENT_COUNT, RERENDER_DELAY } from './constants.js';
+import {
+  TYPESMODIFIER,
+  PIN_DEFAULT_LAT,
+  PIN_DEFAULT_LNG,
+  ADVERTISEMENT_COUNT,
+  RERENDER_DELAY
+} from './constants.js';
 import { getData, sendData } from './api.js';
-import { compareTypes, comparePrice, compareRooms, compareGuests, compareOffers, debounce} from './utils.js';
+import {
+  compareTypes,
+  comparePrice,
+  compareRooms,
+  compareGuests,
+  compareOffers,
+  debounce
+} from './utils.js';
 
 const addressElement = adFormElement.querySelector('#address');
 const resetButtonElement = document.querySelector('.ad-form__reset');
 const mapFiltersElement = document.querySelector('.map__filters');
-const housingTypeFilterElement=mapFiltersElement.querySelector('#housing-type');
-const housingPriceFilterElement = mapFiltersElement.querySelector('#housing-price');
-const housingRoomsFilterElement = mapFiltersElement.querySelector('#housing-rooms');
-const housingGuestsFilterElement = mapFiltersElement.querySelector('#housing-guests');
-const filterFeaturesElement = document.querySelector('#housing-features');
 
 inactivateForm();
 
@@ -75,11 +83,12 @@ resetButtonElement.addEventListener('click', () => {
     lng: PIN_DEFAULT_LNG,
   });
 
-  map.setView({
-    lat: PIN_DEFAULT_LAT,
-    lng: PIN_DEFAULT_LNG,
-  },
-  10,
+  map.setView(
+    {
+      lat: PIN_DEFAULT_LAT,
+      lng: PIN_DEFAULT_LNG,
+    },
+    10,
   );
 });
 
@@ -211,116 +220,33 @@ const createMarker = (offer) => {
   });
 };
 
-getData((offers) => {
-  activateFilter();
-  offers
-    .slice()
-    .filter(compareTypes)
-    .filter(comparePrice)
-    .filter(compareRooms)
-    .sort(compareOffers)
-    .slice(0,ADVERTISEMENT_COUNT)
-    .forEach((item)=>{
-      createMarker(item);
-    });
-});
-
-housingTypeFilterElement.addEventListener('change', debounce(
-  () => {
+const loadAdnFilterData = () =>
+  getData((offers) => {
+    activateFilter();
     markerGroup.clearLayers();
-    getData((offers) => {
-      activateFilter();
-      offers
-        .slice()
-        .filter(compareTypes)
-        .filter(comparePrice)
-        .filter(compareRooms)
-        .sort(compareOffers)
-        .slice(0,ADVERTISEMENT_COUNT)
-        .forEach((item)=>{
-          createMarker(item);
-        });
-    });
-  },
+    offers
+      .slice()
+      .filter(compareTypes)
+      .filter(comparePrice)
+      .filter(compareRooms)
+      .filter(compareGuests)
+      .sort(compareOffers)
+      .slice(0, ADVERTISEMENT_COUNT)
+      .forEach((item) => {
+        createMarker(item);
+      });
+  });
+
+loadAdnFilterData();
+
+const mapFilterElementChangeHandler = debounce(
+  loadAdnFilterData,
   RERENDER_DELAY,
-));
+);
 
-housingPriceFilterElement.addEventListener('change', debounce(
-  () => {
-    markerGroup.clearLayers();
-    getData((offers) => {
-      activateFilter();
-      offers
-        .slice()
-        .filter(compareTypes)
-        .filter(comparePrice)
-        .filter(compareRooms)
-        .filter(compareGuests)
-        .sort(compareOffers)
-        .slice(0,ADVERTISEMENT_COUNT)
-        .forEach((item)=>{
-          createMarker(item);
-        });
-    });
-  },
-  RERENDER_DELAY,
-));
+mapFiltersElement.addEventListener('change', mapFilterElementChangeHandler);
 
-housingRoomsFilterElement.addEventListener('change', () => {
-  markerGroup.clearLayers();
-  getData((offers) => {
-    activateFilter();
-    offers
-      .slice()
-      .filter(compareTypes)
-      .filter(comparePrice)
-      .filter(compareRooms)
-      .filter(compareGuests)
-      .sort(compareOffers)
-      .slice(0,ADVERTISEMENT_COUNT)
-      .forEach((item)=>{
-        createMarker(item);
-      });
-  });
-});
-
-housingGuestsFilterElement.addEventListener('change', () => {
-  markerGroup.clearLayers();
-  getData((offers) => {
-    activateFilter();
-    offers
-      .slice()
-      .filter(compareTypes)
-      .filter(comparePrice)
-      .filter(compareRooms)
-      .filter(compareGuests)
-      .sort(compareOffers)
-      .slice(0,ADVERTISEMENT_COUNT)
-      .forEach((item)=>{
-        createMarker(item);
-      });
-  });
-});
-
-filterFeaturesElement.addEventListener('click', () => {
-  markerGroup.clearLayers();
-  getData((offers) => {
-    activateFilter();
-    offers
-      .slice()
-      .filter(compareTypes)
-      .filter(comparePrice)
-      .filter(compareRooms)
-      .filter(compareGuests)
-      .sort(compareOffers)
-      .slice(0,ADVERTISEMENT_COUNT)
-      .forEach((item)=>{
-        createMarker(item);
-      });
-  });
-});
-
-adFormElement.addEventListener('submit', (evt)=>{
+adFormElement.addEventListener('submit', (evt) => {
   evt.preventDefault();
   const formData = new FormData(evt.target);
   sendData(formData);
