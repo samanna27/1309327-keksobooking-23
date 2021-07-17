@@ -41,6 +41,18 @@ const sendData = (body) => {
       } else {
         const errorMessageElement = errorElement.querySelector('.error').cloneNode(true);
         document.body.append(errorMessageElement);
+        errorMessageElement.querySelector('button').addEventListener('click',() => {
+          errorMessageElement.remove();
+        });
+        document.addEventListener('click',()=> {
+          errorMessageElement.remove();
+        });
+        document.addEventListener('keydown',(evt)=> {
+          if (isEscEvent(evt)) {
+            evt.preventDefault();
+            errorMessageElement.remove();
+          }
+        });
       }
     })
     .catch(() =>{

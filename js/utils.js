@@ -3,12 +3,15 @@ import {
   PIN_DEFAULT_LAT,
   PIN_DEFAULT_LNG,
   LOW_PRICE,
-  MIDDLE_PRICE
+  MIDDLE_PRICE,
+  TYPE_PLACEHOLDER,
+  CAPACITY_DEFAULT_VALUE,
+  TIMEOUT_DEFAULT_VALUE
 } from './constants.js';
-import { adFormElement } from './form-processing.js';
+import { adFormElement, adCapacityElement, adTimeoutElement } from './form-processing.js';
 import { map, mainPinMarker } from './main.js';
 
-const addressElement = adFormElement.querySelector('#address');
+// const addressElement = adFormElement.querySelector('#address');
 const mapFiltersElement = document.querySelector('.map__filters');
 const housingTypeFilterElement =
   mapFiltersElement.querySelector('#housing-type');
@@ -54,7 +57,23 @@ const setToDefault = function () {
     10,
   );
   adFormElement.reset();
-  addressElement.value = `${PIN_DEFAULT_LAT}, ${PIN_DEFAULT_LNG}`;
+  adFormElement.querySelector('#price').placeholder = TYPE_PLACEHOLDER.flat;
+  adCapacityElement.querySelectorAll('option').forEach((item) => {
+    if (item.value !== CAPACITY_DEFAULT_VALUE) {
+      item.removeAttribute('selected');
+    } else {
+      item.removeAttribute('disabled');
+      item.setAttribute('selected', 'selected');
+    }
+  });
+  adTimeoutElement.querySelectorAll('option').forEach((item) => {
+    if (item.value !== TIMEOUT_DEFAULT_VALUE) {
+      item.removeAttribute('selected');
+    } else {
+      item.removeAttribute('disabled');
+      item.setAttribute('selected', 'selected');
+    }
+  });
 };
 
 const isEscEvent = (evt) => evt.key === 'Escape' || evt.key === 'Esc';

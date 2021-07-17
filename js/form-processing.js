@@ -1,4 +1,4 @@
-import { MIN_TITLE_LENGTH, MAX_TITLE_LENGTH, TYPE_MIN_PRICE, TYPE_PLACEHOLDER } from './constants.js';
+import { MIN_TITLE_LENGTH, MAX_TITLE_LENGTH, TYPE_MIN_PRICE, TYPE_PLACEHOLDER, FILE_TYPES } from './constants.js';
 
 const adFormElement = document.querySelector('.ad-form');
 const adFormFieldsetElements = adFormElement.querySelectorAll('fieldset');
@@ -13,6 +13,10 @@ const adCapacityElement = adFormElement.querySelector('#capacity');
 const adTypeElement = adFormElement.querySelector('#type');
 const adTimeinElement = adFormElement.querySelector('#timein');
 const adTimeoutElement = adFormElement.querySelector('#timeout');
+const adFormAvatarElement = document.querySelector('.ad-form__field input[type=file]');
+const previewElement = document.querySelector('.ad-form-header__preview img');
+const adFormUploadElement = document.querySelector('.ad-form__upload input[type=file]');
+const uploadPhotoPreviewElement = document.querySelector('.ad-form__photo');
 
 const inactivateForm = () => {
   adFormElement.classList.add('ad-form--disabled');
@@ -41,6 +45,22 @@ const activateFilter = () => {
   });
   mapFieldsetElement.removeAttribute('disabled');
 };
+
+// adFormElement.addEventListener('change', () => {
+adFormAvatarElement.addEventListener('change', ()=>{
+  const file = adFormAvatarElement.files[0];
+  const fileName = file.name.toLowerCase();
+
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+
+  if (matches) {
+    const reader = new FileReader();
+    reader.addEventListener('load', ()=>{
+      previewElement.src = reader.result;
+    });
+    reader.readAsDataURL(file);
+  }
+});
 
 adTitleElement.addEventListener('input', () => {
   const valueLength = adTitleElement.value.length;
@@ -101,7 +121,7 @@ adTypeElement.addEventListener('change', () => {
 adTimeinElement.addEventListener('change', (evt) => {
   const value = evt.target.value;
   const adTimeoutElementOptionArray =
-    adTimeoutElement.querySelectorAll('option');
+  adTimeoutElement.querySelectorAll('option');
   adTimeoutElementOptionArray.forEach ((item) => {
     if (item.value !== value){
       item.setAttribute('disabled', 'disabled');
@@ -116,7 +136,7 @@ adTimeinElement.addEventListener('change', (evt) => {
 adTimeoutElement.addEventListener('change', (evt) => {
   const value = evt.target.value;
   const adTimeinElementOptionArray =
-    adTimeinElement.querySelectorAll('option');
+  adTimeinElement.querySelectorAll('option');
   adTimeinElementOptionArray.forEach ((item) => {
     if (item.value !== value){
       item.setAttribute('disabled', 'disabled');
@@ -131,7 +151,7 @@ adTimeoutElement.addEventListener('change', (evt) => {
 const filterChangeHandler = function (evt) {
   const value = evt.target.value;
   const adCapacityElementOptionArray =
-    adCapacityElement.querySelectorAll('option');
+  adCapacityElement.querySelectorAll('option');
   if (value === '100') {
     adCapacityElementOptionArray.forEach((item) => {
       if (item.value !== '0') {
@@ -166,5 +186,24 @@ const filterChangeHandler = function (evt) {
 
 adRoomNumberElement.addEventListener('change', filterChangeHandler);
 
-export { inactivateForm, activateForm, adFormElement, activateFilter };
+adFormUploadElement.addEventListener('change', ()=>{
+  const file = adFormUploadElement.files[0];
+  const fileName = file.name.toLowerCase();
+
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+
+  if (matches) {
+    const reader = new FileReader();
+    reader.addEventListener('load', ()=>{
+      const photoPreviewElement = previewElement.cloneNode(true);
+      uploadPhotoPreviewElement.appendChild(photoPreviewElement);
+      photoPreviewElement.src = reader.result;
+    });
+    reader.readAsDataURL(file);
+  }
+});
+
+// });
+
+export { inactivateForm, activateForm, adFormElement, adCapacityElement, adTimeoutElement, activateFilter };
 

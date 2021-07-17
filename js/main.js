@@ -18,7 +18,8 @@ import {
   compareRooms,
   compareGuests,
   compareOffers,
-  debounce
+  debounce,
+  setToDefault
 } from './utils.js';
 
 const addressElement = adFormElement.querySelector('#address');
@@ -78,18 +79,7 @@ const adPinIcon = L.icon({
 });
 
 resetButtonElement.addEventListener('click', () => {
-  mainPinMarker.setLatLng({
-    lat: PIN_DEFAULT_LAT,
-    lng: PIN_DEFAULT_LNG,
-  });
-
-  map.setView(
-    {
-      lat: PIN_DEFAULT_LAT,
-      lng: PIN_DEFAULT_LNG,
-    },
-    10,
-  );
+  setToDefault();
 });
 
 const createCustomPopup = (offer) => {

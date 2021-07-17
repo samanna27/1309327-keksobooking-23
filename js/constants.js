@@ -22,12 +22,15 @@ const TYPE_PLACEHOLDER = {
   house: '5 000',
   palace: '10 000',
 };
-const PIN_DEFAULT_LAT = 35.7;
-const PIN_DEFAULT_LNG = 139.6;
+const PIN_DEFAULT_LAT = 35.6895.toFixed(5);
+const PIN_DEFAULT_LNG = 139.692.toFixed(5);
 const ALERT_SHOW_TIME = 5000;
 const LOW_PRICE = 10000;
 const MIDDLE_PRICE = 50000;
 const RERENDER_DELAY = 500;
+const CAPACITY_DEFAULT_VALUE = '1';
+const TIMEOUT_DEFAULT_VALUE = '12:00';
+const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
 export {
   ADVERTISEMENT_COUNT,
@@ -41,5 +44,8 @@ export {
   ALERT_SHOW_TIME,
   LOW_PRICE,
   MIDDLE_PRICE,
-  RERENDER_DELAY
+  RERENDER_DELAY,
+  CAPACITY_DEFAULT_VALUE,
+  TIMEOUT_DEFAULT_VALUE,
+  FILE_TYPES
 };
