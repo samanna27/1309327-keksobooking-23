@@ -7,12 +7,43 @@ const Url = {
 };
 const successElement = document.querySelector('#success').content;
 const errorElement = document.querySelector('#error').content;
+const successMessageElement = successElement.querySelector('.success').cloneNode(true);
+const errorMessageElement = errorElement.querySelector('.error').cloneNode(true);
+const errorMessageButton = errorMessageElement.querySelector('button');
 
 const getData = (onSuccess) => {
   fetch(Url.DATA)
     .then((response) => response.json())
     .then(onSuccess)
     .catch(showAlert);
+};
+
+const onSuccessMessageClick = () => {
+  successMessageElement.remove();
+  setToDefault();
+};
+
+const onSuccessMessageEscKeydown = (evt) => {
+  if (isEscEvent(evt)) {
+    evt.preventDefault();
+    successMessageElement.remove();
+    setToDefault();
+  }
+};
+
+const onErrorMessageButton = () => {
+  errorMessageElement.remove();
+};
+
+const onErrorMessageClick = () => {
+  errorMessageElement.remove();
+};
+
+const onErrorMessageKeydown = (evt) => {
+  if (isEscEvent(evt)) {
+    evt.preventDefault();
+    errorMessageElement.remove();
+  }
 };
 
 const sendData = (body) => {
@@ -25,40 +56,22 @@ const sendData = (body) => {
   )
     .then((response) => {
       if (response.ok) {
-        const successMessageElement = successElement.querySelector('.success').cloneNode(true);
         document.body.append(successMessageElement);
-        document.addEventListener('keydown',(evt)=> {
-          if (isEscEvent(evt)) {
-            evt.preventDefault();
-            successMessageElement.remove();
-            setToDefault();
-          }
-        });
-        document.addEventListener('click',()=> {
-          successMessageElement.remove();
-          setToDefault();
-        });
+        document.addEventListener('keydown', onSuccessMessageEscKeydown);
+        document.addEventListener('click', onSuccessMessageClick);
       } else {
-        const errorMessageElement = errorElement.querySelector('.error').cloneNode(true);
         document.body.append(errorMessageElement);
-        errorMessageElement.querySelector('button').addEventListener('click',() => {
-          errorMessageElement.remove();
-        });
-        document.addEventListener('click',()=> {
-          errorMessageElement.remove();
-        });
-        document.addEventListener('keydown',(evt)=> {
-          if (isEscEvent(evt)) {
-            evt.preventDefault();
-            errorMessageElement.remove();
-          }
-        });
+        errorMessageButton.addEventListener('click', onErrorMessageButton);
+        document.addEventListener('click',onErrorMessageClick);
+        document.addEventListener('keydown', onErrorMessageKeydown);
       }
     })
     .catch(() =>{
-      const errorMessageElement = errorElement.querySelector('.error').cloneNode(true);
       document.body.append(errorMessageElement);
+      errorMessageButton.addEventListener('click', onErrorMessageButton);
+      document.addEventListener('click', onErrorMessageClick);
+      document.addEventListener('keydown',onErrorMessageKeydown);
     });
 };
 
-export {getData, sendData };
+export {getData, sendData, onSuccessMessageClick, onSuccessMessageEscKeydown as onSuccessMessageEscKyedown };

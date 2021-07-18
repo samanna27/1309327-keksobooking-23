@@ -10,8 +10,8 @@ import {
 } from './constants.js';
 import { adFormElement, adCapacityElement, adTimeoutElement } from './form-processing.js';
 import { map, mainPinMarker } from './main.js';
+import { onSuccessMessageClick, onSuccessMessageEscKyedown as onSuccessMessageEscKeydown } from './api.js';
 
-// const addressElement = adFormElement.querySelector('#address');
 const mapFiltersElement = document.querySelector('.map__filters');
 const housingTypeFilterElement =
   mapFiltersElement.querySelector('#housing-type');
@@ -74,6 +74,8 @@ const setToDefault = function () {
       item.setAttribute('selected', 'selected');
     }
   });
+  document.removeEventListener('click', onSuccessMessageClick);
+  document.removeEventListener('keydown', onSuccessMessageEscKeydown);
 };
 
 const isEscEvent = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
@@ -106,8 +108,6 @@ const comparePrice = (offer) => {
     offer.offer.price >= MIDDLE_PRICE
   ) {
     return offer;
-  } else {
-    return false;
   }
 };
 
@@ -116,8 +116,6 @@ const compareRooms = (offer) => {
     return offer;
   } else if (offer.offer.rooms === +housingRoomsFilterElement.value) {
     return offer;
-  } else {
-    return false;
   }
 };
 
@@ -126,8 +124,6 @@ const compareGuests = (offer) => {
     return offer;
   } else if (offer.offer.guests === +housingGuestsFilterElement.value) {
     return offer;
-  } else {
-    return false;
   }
 };
 

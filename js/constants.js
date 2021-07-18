@@ -13,7 +13,7 @@ const TYPE_MIN_PRICE = {
   flat: 1000,
   hotel: 3000,
   house: 5000,
-  palace: '10000',
+  palace: 10000,
 };
 const TYPE_PLACEHOLDER = {
   bungalow: '0',
@@ -31,6 +31,7 @@ const RERENDER_DELAY = 500;
 const CAPACITY_DEFAULT_VALUE = '1';
 const TIMEOUT_DEFAULT_VALUE = '12:00';
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+const MAX_PRICE = 1000000;
 
 export {
   ADVERTISEMENT_COUNT,
@@ -47,5 +48,6 @@ export {
   RERENDER_DELAY,
   CAPACITY_DEFAULT_VALUE,
   TIMEOUT_DEFAULT_VALUE,
-  FILE_TYPES
+  FILE_TYPES,
+  MAX_PRICE
 };

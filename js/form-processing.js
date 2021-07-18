@@ -1,4 +1,4 @@
-import { MIN_TITLE_LENGTH, MAX_TITLE_LENGTH, TYPE_MIN_PRICE, TYPE_PLACEHOLDER, FILE_TYPES } from './constants.js';
+import { MIN_TITLE_LENGTH, MAX_TITLE_LENGTH, TYPE_MIN_PRICE, TYPE_PLACEHOLDER, FILE_TYPES, MAX_PRICE } from './constants.js';
 
 const adFormElement = document.querySelector('.ad-form');
 const adFormFieldsetElements = adFormElement.querySelectorAll('fieldset');
@@ -89,15 +89,17 @@ adTitleElement.addEventListener('input', () => {
 const priceInputHandler = () => {
   adPriceElement.addEventListener('input', (evt) => {
     const value = adPriceElement.value;
-    const minPrice = adPriceElement.min;
+    const type = adTypeElement.value;
+    const minPrice = TYPE_MIN_PRICE[type];
     const valueLength = adPriceElement.value.length;
+    evt.target.min = minPrice;
 
-    if (value > 1000000) {
+    if (value > MAX_PRICE) {
       adPriceElement.setCustomValidity('Цена не может быть больше 1 000 000');
     } else if (valueLength === 0) {
       adPriceElement.setCustomValidity('Обязательное поле');
     } else if (value < minPrice) {
-      adPriceElement.setCustomValidity(`Минимальная цена ${evt.target.min}`);
+      adPriceElement.setCustomValidity(`Минимальная цена ${minPrice}`);
     } else {
       adPriceElement.setCustomValidity('');
     }
