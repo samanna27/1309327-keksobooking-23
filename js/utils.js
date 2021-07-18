@@ -8,9 +8,16 @@ import {
   CAPACITY_DEFAULT_VALUE,
   TIMEOUT_DEFAULT_VALUE
 } from './constants.js';
-import { adFormElement, adCapacityElement, adTimeoutElement } from './form-processing.js';
+import {
+  adFormElement,
+  adCapacityElement,
+  adTimeoutElement
+} from './form-processing.js';
 import { map, mainPinMarker } from './main.js';
-import { onSuccessMessageClick, onSuccessMessageEscKyedown as onSuccessMessageEscKeydown } from './api.js';
+import {
+  onSuccessMessageClick,
+  onSuccessMessageEscKyedown as onSuccessMessageEscKeydown
+} from './api.js';
 
 const mapFiltersElement = document.querySelector('.map__filters');
 const housingTypeFilterElement =

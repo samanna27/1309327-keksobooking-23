@@ -7,8 +7,12 @@ const Url = {
 };
 const successElement = document.querySelector('#success').content;
 const errorElement = document.querySelector('#error').content;
-const successMessageElement = successElement.querySelector('.success').cloneNode(true);
-const errorMessageElement = errorElement.querySelector('.error').cloneNode(true);
+const successMessageElement = successElement
+  .querySelector('.success')
+  .cloneNode(true);
+const errorMessageElement = errorElement
+  .querySelector('.error')
+  .cloneNode(true);
 const errorMessageButton = errorMessageElement.querySelector('button');
 
 const getData = (onSuccess) => {
@@ -47,13 +51,11 @@ const onErrorMessageKeydown = (evt) => {
 };
 
 const sendData = (body) => {
-  fetch(Url.SERVER,
-    {
-      method: 'POST',
-      type: 'multipart/form-data',
-      body,
-    },
-  )
+  fetch(Url.SERVER, {
+    method: 'POST',
+    type: 'multipart/form-data',
+    body,
+  })
     .then((response) => {
       if (response.ok) {
         document.body.append(successMessageElement);
@@ -62,16 +64,21 @@ const sendData = (body) => {
       } else {
         document.body.append(errorMessageElement);
         errorMessageButton.addEventListener('click', onErrorMessageButton);
-        document.addEventListener('click',onErrorMessageClick);
+        document.addEventListener('click', onErrorMessageClick);
         document.addEventListener('keydown', onErrorMessageKeydown);
       }
     })
-    .catch(() =>{
+    .catch(() => {
       document.body.append(errorMessageElement);
       errorMessageButton.addEventListener('click', onErrorMessageButton);
       document.addEventListener('click', onErrorMessageClick);
-      document.addEventListener('keydown',onErrorMessageKeydown);
+      document.addEventListener('keydown', onErrorMessageKeydown);
     });
 };
 
-export {getData, sendData, onSuccessMessageClick, onSuccessMessageEscKeydown as onSuccessMessageEscKyedown };
+export {
+  getData,
+  sendData,
+  onSuccessMessageClick,
+  onSuccessMessageEscKeydown as onSuccessMessageEscKyedown
+};

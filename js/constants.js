@@ -22,8 +22,8 @@ const TYPE_PLACEHOLDER = {
   house: '5 000',
   palace: '10 000',
 };
-const PIN_DEFAULT_LAT = 35.6895.toFixed(5);
-const PIN_DEFAULT_LNG = 139.692.toFixed(5);
+const PIN_DEFAULT_LAT = (35.6895).toFixed(5);
+const PIN_DEFAULT_LNG = (139.692).toFixed(5);
 const ALERT_SHOW_TIME = 5000;
 const LOW_PRICE = 10000;
 const MIDDLE_PRICE = 50000;
