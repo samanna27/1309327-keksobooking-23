@@ -2,7 +2,7 @@ import { showAlert } from './utils.js';
 import { setToDefault, isEscEvent } from './utils.js';
 
 const Url = {
-  SERVER: 'https://23.javascript.pages.academy/keksobooking404',
+  SERVER: 'https://23.javascript.pages.academy/keksobooking',
   DATA: 'https://23.javascript.pages.academy/keksobooking/data',
 };
 const successElement = document.querySelector('#success').content;
