@@ -236,10 +236,12 @@ const mapFilterElementChangeHandler = debounce(
 
 mapFiltersElement.addEventListener('change', mapFilterElementChangeHandler);
 
-adFormElement.addEventListener('submit', (evt) => {
+const onAdFormElementSubmit = (evt) => {
   evt.preventDefault();
   const formData = new FormData(evt.target);
   sendData(formData);
-});
+};
 
-export { map, mainPinMarker };
+adFormElement.addEventListener('submit', onAdFormElementSubmit);
+
+export { map, mainPinMarker, onAdFormElementSubmit };

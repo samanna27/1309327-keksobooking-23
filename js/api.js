@@ -2,7 +2,7 @@ import { showAlert } from './utils.js';
 import { setToDefault, isEscEvent } from './utils.js';
 
 const Url = {
-  SERVER: 'https://23.javascript.pages.academy/keksobooking',
+  SERVER: 'https://23.javascript.pages.academy/keksobooking404',
   DATA: 'https://23.javascript.pages.academy/keksobooking/data',
 };
 const successElement = document.querySelector('#success').content;
@@ -80,5 +80,5 @@ export {
   getData,
   sendData,
   onSuccessMessageClick,
-  onSuccessMessageEscKeydown as onSuccessMessageEscKyedown
+  onSuccessMessageEscKeydown
 };

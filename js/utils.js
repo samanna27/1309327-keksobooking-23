@@ -16,8 +16,9 @@ import {
 import { map, mainPinMarker } from './main.js';
 import {
   onSuccessMessageClick,
-  onSuccessMessageEscKyedown as onSuccessMessageEscKeydown
+  onSuccessMessageEscKeydown
 } from './api.js';
+import { onAdFormElementSubmit } from './main.js';
 
 const mapFiltersElement = document.querySelector('.map__filters');
 const housingTypeFilterElement =
@@ -83,6 +84,7 @@ const setToDefault = function () {
   });
   document.removeEventListener('click', onSuccessMessageClick);
   document.removeEventListener('keydown', onSuccessMessageEscKeydown);
+  adFormElement.addEventListener('submit', onAdFormElementSubmit);
 };
 
 const isEscEvent = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
