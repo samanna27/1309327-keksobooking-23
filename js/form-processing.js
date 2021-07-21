@@ -6,7 +6,9 @@ import {
   FILE_TYPES,
   MAX_PRICE,
   PHOTO_WIDTH,
-  PHOTO_HEIGHT
+  PHOTO_HEIGHT,
+  ROOM_NUMBER_MAX,
+  CAPACITY_NOT_FOR_GUESTS
 } from './constants.js';
 
 const adFormElement = document.querySelector('.ad-form');
@@ -156,14 +158,14 @@ adTimeoutElement.addEventListener('change', (evt) => {
 
 const filterChangeHandler = function (evt) {
   const value = evt.target.value;
-  if (value === '100') {
-    if (adCapacityElement.value !== '0') {
+  if (value === ROOM_NUMBER_MAX) {
+    if (adCapacityElement.value !== CAPACITY_NOT_FOR_GUESTS) {
       adCapacityElement.setCustomValidity('Для опции 100 комнат можно выбрать только Не для гостей');
     } else {
       adCapacityElement.setCustomValidity('');
     }
-  } else if (value !== '100') {
-    if (adCapacityElement.value === '0') {
+  } else if (value !== ROOM_NUMBER_MAX) {
+    if (adCapacityElement.value === CAPACITY_NOT_FOR_GUESTS) {
       adCapacityElement.setCustomValidity('Не для гостей можно выбрать только для опции 100 комнат');
     } else if (adCapacityElement.value > value) {
       adCapacityElement.setCustomValidity('Количество гостей не может быть больше количества комнат');
@@ -177,14 +179,14 @@ const filterChangeHandler = function (evt) {
 
 const filterCapacityChangeHandler = function (evt) {
   const value = evt.target.value;
-  if (value === '0') {
-    if (adRoomNumberElement.value !== '100') {
+  if (value === CAPACITY_NOT_FOR_GUESTS) {
+    if (adRoomNumberElement.value !== ROOM_NUMBER_MAX) {
       adCapacityElement.setCustomValidity('Не для гостей можно выбрать только для опции 100 комнат');
     } else {
       adCapacityElement.setCustomValidity('');
     }
-  } else if (value !== 0) {
-    if (adRoomNumberElement.value === '100') {
+  } else if (value !== CAPACITY_NOT_FOR_GUESTS) {
+    if (adRoomNumberElement.value === ROOM_NUMBER_MAX) {
       adCapacityElement.setCustomValidity('Не для гостей можно выбрать только для опции 100 комнат');
     } else if (value > adRoomNumberElement.value) {
       adCapacityElement.setCustomValidity('Количество гостей не может быть больше количества комнат');

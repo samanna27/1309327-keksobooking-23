@@ -35,6 +35,8 @@ const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 const MAX_PRICE = 1000000;
 const PHOTO_WIDTH = 40;
 const PHOTO_HEIGHT = 44;
+const ROOM_NUMBER_MAX = '100';
+const CAPACITY_NOT_FOR_GUESTS = '0';
 
 export {
   ADVERTISEMENT_COUNT,
@@ -55,5 +57,7 @@ export {
   FILE_TYPES,
   MAX_PRICE,
   PHOTO_WIDTH,
-  PHOTO_HEIGHT
+  PHOTO_HEIGHT,
+  ROOM_NUMBER_MAX,
+  CAPACITY_NOT_FOR_GUESTS
 };
