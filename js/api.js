@@ -35,10 +35,6 @@ const onSuccessMessageEscKeydown = (evt) => {
   }
 };
 
-const onErrorMessageButton = () => {
-  errorMessageElement.remove();
-};
-
 const onErrorMessageClick = () => {
   errorMessageElement.remove();
 };
@@ -48,6 +44,13 @@ const onErrorMessageKeydown = (evt) => {
     evt.preventDefault();
     errorMessageElement.remove();
   }
+};
+
+const onErrorMessageButton = () => {
+  errorMessageElement.remove();
+  document.removeEventListener('click', onErrorMessageClick);
+  document.removeEventListener('keydown', onErrorMessageKeydown);
+
 };
 
 const sendData = (body) => {

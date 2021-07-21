@@ -6,12 +6,16 @@ import {
   MIDDLE_PRICE,
   TYPE_PLACEHOLDER,
   CAPACITY_DEFAULT_VALUE,
+  TIMEIN_DEFAULT_VALUE,
   TIMEOUT_DEFAULT_VALUE
 } from './constants.js';
 import {
   adFormElement,
   adCapacityElement,
-  adTimeoutElement
+  adTimeinElement,
+  adTimeoutElement,
+  previewElement,
+  photoPreviewElement
 } from './form-processing.js';
 import { map, mainPinMarker } from './main.js';
 import {
@@ -78,13 +82,23 @@ const setToDefault = function () {
     if (item.value !== TIMEOUT_DEFAULT_VALUE) {
       item.removeAttribute('selected');
     } else {
-      item.removeAttribute('disabled');
       item.setAttribute('selected', 'selected');
     }
+
+  });
+  adTimeinElement.querySelectorAll('option').forEach((item) => {
+    if (item.value !== TIMEIN_DEFAULT_VALUE) {
+      item.removeAttribute('selected');
+    } else {
+      item.setAttribute('selected', 'selected');
+    }
+
   });
   document.removeEventListener('click', onSuccessMessageClick);
   document.removeEventListener('keydown', onSuccessMessageEscKeydown);
   adFormElement.addEventListener('submit', onAdFormElementSubmit);
+  previewElement.src = '';
+  photoPreviewElement.src = '';
 };
 
 const isEscEvent = (evt) => evt.key === 'Escape' || evt.key === 'Esc';

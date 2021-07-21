@@ -4,7 +4,9 @@ import {
   TYPE_MIN_PRICE,
   TYPE_PLACEHOLDER,
   FILE_TYPES,
-  MAX_PRICE
+  MAX_PRICE,
+  PHOTO_WIDTH,
+  PHOTO_HEIGHT
 } from './constants.js';
 
 const adFormElement = document.querySelector('.ad-form');
@@ -55,8 +57,7 @@ const activateFilter = () => {
   mapFieldsetElement.removeAttribute('disabled');
 };
 
-// adFormElement.addEventListener('change', () => {
-adFormAvatarElement.addEventListener('change', () => {
+const onAdFormAvatarElementChange = () => {
   const file = adFormAvatarElement.files[0];
   const fileName = file.name.toLowerCase();
 
@@ -69,7 +70,9 @@ adFormAvatarElement.addEventListener('change', () => {
     });
     reader.readAsDataURL(file);
   }
-});
+};
+
+adFormAvatarElement.addEventListener('change', onAdFormAvatarElementChange);
 
 adTitleElement.addEventListener('input', () => {
   const valueLength = adTitleElement.value.length;
@@ -118,7 +121,6 @@ const priceInputHandler = () => {
 priceInputHandler();
 
 adTypeElement.addEventListener('change', () => {
-  adPriceElement.value = '';
   const type = adTypeElement.value;
   const minPrice = TYPE_MIN_PRICE[type];
   const pricePlaceholder = TYPE_PLACEHOLDER[type];
@@ -133,10 +135,8 @@ adTimeinElement.addEventListener('change', (evt) => {
     adTimeoutElement.querySelectorAll('option');
   adTimeoutElementOptionArray.forEach((item) => {
     if (item.value !== value) {
-      item.setAttribute('disabled', 'disabled');
       item.removeAttribute('selected');
     } else {
-      item.removeAttribute('disabled');
       item.setAttribute('selected', 'selected');
     }
   });
@@ -147,10 +147,8 @@ adTimeoutElement.addEventListener('change', (evt) => {
   const adTimeinElementOptionArray = adTimeinElement.querySelectorAll('option');
   adTimeinElementOptionArray.forEach((item) => {
     if (item.value !== value) {
-      item.setAttribute('disabled', 'disabled');
       item.removeAttribute('selected');
     } else {
-      item.removeAttribute('disabled');
       item.setAttribute('selected', 'selected');
     }
   });
@@ -158,43 +156,55 @@ adTimeoutElement.addEventListener('change', (evt) => {
 
 const filterChangeHandler = function (evt) {
   const value = evt.target.value;
-  const adCapacityElementOptionArray =
-    adCapacityElement.querySelectorAll('option');
   if (value === '100') {
-    adCapacityElementOptionArray.forEach((item) => {
-      if (item.value !== '0') {
-        item.setAttribute('disabled', 'disabled');
-        item.removeAttribute('selected');
-      } else {
-        item.removeAttribute('disabled');
-        item.setAttribute('selected', 'selected');
-      }
-    });
+    if (adCapacityElement.value !== '0') {
+      adCapacityElement.setCustomValidity('Для опции 100 комнат можно выбрать только Не для гостей');
+    } else {
+      adCapacityElement.setCustomValidity('');
+    }
   } else if (value !== '100') {
-    adCapacityElementOptionArray.forEach((item) => {
-      item.removeAttribute('disables');
-    });
-    adCapacityElementOptionArray.forEach((item) => {
-      if (item.value === '0') {
-        item.setAttribute('disabled', 'disabled');
-        item.removeAttribute('selected');
-      } else if (item.value < value) {
-        item.removeAttribute('disabled');
-        item.removeAttribute('selected', 'selected');
-      } else if (item.value > value) {
-        item.setAttribute('disabled', 'disabled');
-        item.removeAttribute('selected');
-      } else {
-        item.removeAttribute('disabled');
-        item.setAttribute('selected', 'selected');
-      }
-    });
+    if (adCapacityElement.value === '0') {
+      adCapacityElement.setCustomValidity('Не для гостей можно выбрать только для опции 100 комнат');
+    } else if (adCapacityElement.value > value) {
+      adCapacityElement.setCustomValidity('Количество гостей не может быть больше количества комнат');
+    } else {
+      adCapacityElement.setCustomValidity('');
+    }
   }
+
+  adCapacityElement.reportValidity();
+};
+
+const filterCapacityChangeHandler = function (evt) {
+  const value = evt.target.value;
+  if (value === '0') {
+    if (adRoomNumberElement.value !== '100') {
+      adCapacityElement.setCustomValidity('Не для гостей можно выбрать только для опции 100 комнат');
+    } else {
+      adCapacityElement.setCustomValidity('');
+    }
+  } else if (value !== 0) {
+    if (adRoomNumberElement.value === '100') {
+      adCapacityElement.setCustomValidity('Не для гостей можно выбрать только для опции 100 комнат');
+    } else if (value > adRoomNumberElement.value) {
+      adCapacityElement.setCustomValidity('Количество гостей не может быть больше количества комнат');
+    } else {
+      adCapacityElement.setCustomValidity('');
+    }
+  }
+
+  adCapacityElement.reportValidity();
 };
 
 adRoomNumberElement.addEventListener('change', filterChangeHandler);
+adCapacityElement.addEventListener('change', filterCapacityChangeHandler);
 
-adFormUploadElement.addEventListener('change', () => {
+const photoPreviewElement = document.createElement('img');
+photoPreviewElement.width = PHOTO_WIDTH;
+photoPreviewElement.height = PHOTO_HEIGHT;
+uploadPhotoPreviewElement.insertAdjacentElement('beforeend', photoPreviewElement);
+
+const onAdFormUploadElementChange = () => {
   const file = adFormUploadElement.files[0];
   const fileName = file.name.toLowerCase();
 
@@ -203,21 +213,22 @@ adFormUploadElement.addEventListener('change', () => {
   if (matches) {
     const reader = new FileReader();
     reader.addEventListener('load', () => {
-      const photoPreviewElement = previewElement.cloneNode(true);
-      uploadPhotoPreviewElement.appendChild(photoPreviewElement);
       photoPreviewElement.src = reader.result;
     });
     reader.readAsDataURL(file);
   }
-});
+};
 
-// });
+adFormUploadElement.addEventListener('change', onAdFormUploadElementChange);
 
 export {
   inactivateForm,
   activateForm,
   adFormElement,
   adCapacityElement,
+  adTimeinElement,
   adTimeoutElement,
-  activateFilter
+  activateFilter,
+  previewElement,
+  photoPreviewElement
 };
