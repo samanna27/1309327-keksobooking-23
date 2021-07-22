@@ -50,7 +50,6 @@ const onErrorMessageButton = () => {
   errorMessageElement.remove();
   document.removeEventListener('click', onErrorMessageClick);
   document.removeEventListener('keydown', onErrorMessageKeydown);
-
 };
 
 const sendData = (body) => {

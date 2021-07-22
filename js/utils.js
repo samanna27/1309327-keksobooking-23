@@ -7,7 +7,8 @@ import {
   TYPE_PLACEHOLDER,
   CAPACITY_DEFAULT_VALUE,
   TIMEIN_DEFAULT_VALUE,
-  TIMEOUT_DEFAULT_VALUE
+  TIMEOUT_DEFAULT_VALUE,
+  EMPTY_IMAGE
 } from './constants.js';
 import {
   adFormElement,
@@ -97,8 +98,8 @@ const setToDefault = function () {
   document.removeEventListener('click', onSuccessMessageClick);
   document.removeEventListener('keydown', onSuccessMessageEscKeydown);
   adFormElement.addEventListener('submit', onAdFormElementSubmit);
-  previewElement.src = '';
-  photoPreviewElement.src = '';
+  previewElement.src = EMPTY_IMAGE;
+  photoPreviewElement.src = EMPTY_IMAGE;
 };
 
 const isEscEvent = (evt) => evt.key === 'Escape' || evt.key === 'Esc';

@@ -133,27 +133,16 @@ adTypeElement.addEventListener('change', () => {
 
 adTimeinElement.addEventListener('change', (evt) => {
   const value = evt.target.value;
-  const adTimeoutElementOptionArray =
-    adTimeoutElement.querySelectorAll('option');
-  adTimeoutElementOptionArray.forEach((item) => {
-    if (item.value !== value) {
-      item.removeAttribute('selected');
-    } else {
-      item.setAttribute('selected', 'selected');
-    }
-  });
+  if (adTimeoutElement.value !== value) {
+    adTimeoutElement.value = value;
+  }
 });
 
 adTimeoutElement.addEventListener('change', (evt) => {
   const value = evt.target.value;
-  const adTimeinElementOptionArray = adTimeinElement.querySelectorAll('option');
-  adTimeinElementOptionArray.forEach((item) => {
-    if (item.value !== value) {
-      item.removeAttribute('selected');
-    } else {
-      item.setAttribute('selected', 'selected');
-    }
-  });
+  if (adTimeinElement.value !== value) {
+    adTimeinElement.value = value;
+  }
 });
 
 const filterChangeHandler = function (evt) {
